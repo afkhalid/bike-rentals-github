@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-amplifycc7b94eb761f4-staging-142701-authRole",
+      "UnauthRoleArn": "arn:aws:iam::990492712904:role/amplify-amplifycc7b94eb761f4-staging-142701-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::990492712904:role/amplify-amplifycc7b94eb761f4-staging-142701-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-amplifycc7b94eb761f4-staging-142701-deployment",
+      "UnauthRoleName": "amplify-amplifycc7b94eb761f4-staging-142701-unauthRole",
+      "StackName": "amplify-amplifycc7b94eb761f4-staging-142701",
+      "StackId": "arn:aws:cloudformation:us-east-1:990492712904:stack/amplify-amplifycc7b94eb761f4-staging-142701/b217a6d0-7d21-11ec-8ccc-0ed3f5cb58ef",
+      "AmplifyAppId": "d1e6h58efb9buy"
+    },
+    "categories": {
+      "auth": {
+        "bikerentals902db495": {}
+      }
+    }
+  }
+}
