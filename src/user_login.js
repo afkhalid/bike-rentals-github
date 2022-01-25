@@ -2,7 +2,7 @@ import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import React, { Component } from 'react';
 
-class LogIn extends Component {
+class UserLogIn extends Component {
   render() {
     const { signOut, user } = this.props;
     return (
@@ -14,4 +14,4 @@ class LogIn extends Component {
   }
 }
 
-export default withAuthenticator(LogIn);
+export default withAuthenticator(UserLogIn);
