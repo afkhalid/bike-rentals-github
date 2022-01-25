@@ -30,6 +30,13 @@ export default class User extends Component {
       const {firstName, lastName, username, email, role} = this.state;
       if (this.operation === "add") {
         const cognitoUser = await Auth.signUp({username, password: "PassW0rd!@#$", attributes: {email}});
+        await API.post("AdminQueries", "/confirmUserSignUp", {
+          body: {username},
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+          }
+        });
         await API.graphql({
           query: createUser,
           variables: {input: {uuid: cognitoUser.userSub, firstName, lastName, username, email, role}}
