@@ -23,12 +23,13 @@ class HomePage extends Component {
               username: user.username,
               uuid: user.attributes.sub,
               email: user.attributes.email,
+              role: "User",
             }
           }
         });
       }
     } catch (e) {
-      console.log("User Login::ComponentDidMount failed for the following error", e);
+      console.log("Home Page::ComponentDidMount failed for the following error", e);
     }
   }
 
