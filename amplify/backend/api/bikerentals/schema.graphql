@@ -3,20 +3,17 @@
 input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
 
 type User @model {
-  id: ID!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
   email: AWSEmail!
-  uuid: String!
-  role: String!
-  username: String!
-  bikes: [Bike] @hasMany
+  uuid: ID! @primaryKey
+  role: String
+  username: String
   reservations: [Reservation] @hasMany
   ratings: [Rating] @hasMany
 }
 
 type Bike @model {
-  id: ID!
   model: String!
   color: String!
   location: String!
@@ -25,12 +22,10 @@ type Bike @model {
 }
 
 type Reservation @model {
-  id: ID!
   startDate: AWSDate!
   endDate: AWSDate!
 }
 
 type Rating @model {
-  id: ID!
   rating: Int!
 }

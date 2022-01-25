@@ -7,7 +7,6 @@ export const createUser = /* GraphQL */ `
     $condition: ModelUserConditionInput
   ) {
     createUser(input: $input, condition: $condition) {
-      id
       firstName
       lastName
       email
@@ -16,10 +15,10 @@ export const createUser = /* GraphQL */ `
       username
       bikes {
         items {
-          id
           model
           color
           location
+          id
           createdAt
           updatedAt
           userBikesId
@@ -28,9 +27,9 @@ export const createUser = /* GraphQL */ `
       }
       reservations {
         items {
-          id
           startDate
           endDate
+          id
           createdAt
           updatedAt
           userReservationsId
@@ -40,8 +39,8 @@ export const createUser = /* GraphQL */ `
       }
       ratings {
         items {
-          id
           rating
+          id
           createdAt
           updatedAt
           userRatingsId
@@ -60,7 +59,6 @@ export const updateUser = /* GraphQL */ `
     $condition: ModelUserConditionInput
   ) {
     updateUser(input: $input, condition: $condition) {
-      id
       firstName
       lastName
       email
@@ -69,10 +67,10 @@ export const updateUser = /* GraphQL */ `
       username
       bikes {
         items {
-          id
           model
           color
           location
+          id
           createdAt
           updatedAt
           userBikesId
@@ -81,9 +79,9 @@ export const updateUser = /* GraphQL */ `
       }
       reservations {
         items {
-          id
           startDate
           endDate
+          id
           createdAt
           updatedAt
           userReservationsId
@@ -93,8 +91,8 @@ export const updateUser = /* GraphQL */ `
       }
       ratings {
         items {
-          id
           rating
+          id
           createdAt
           updatedAt
           userRatingsId
@@ -113,7 +111,6 @@ export const deleteUser = /* GraphQL */ `
     $condition: ModelUserConditionInput
   ) {
     deleteUser(input: $input, condition: $condition) {
-      id
       firstName
       lastName
       email
@@ -122,10 +119,10 @@ export const deleteUser = /* GraphQL */ `
       username
       bikes {
         items {
-          id
           model
           color
           location
+          id
           createdAt
           updatedAt
           userBikesId
@@ -134,9 +131,9 @@ export const deleteUser = /* GraphQL */ `
       }
       reservations {
         items {
-          id
           startDate
           endDate
+          id
           createdAt
           updatedAt
           userReservationsId
@@ -146,8 +143,8 @@ export const deleteUser = /* GraphQL */ `
       }
       ratings {
         items {
-          id
           rating
+          id
           createdAt
           updatedAt
           userRatingsId
@@ -166,15 +163,14 @@ export const createBike = /* GraphQL */ `
     $condition: ModelBikeConditionInput
   ) {
     createBike(input: $input, condition: $condition) {
-      id
       model
       color
       location
       reservations {
         items {
-          id
           startDate
           endDate
+          id
           createdAt
           updatedAt
           userReservationsId
@@ -184,8 +180,8 @@ export const createBike = /* GraphQL */ `
       }
       ratings {
         items {
-          id
           rating
+          id
           createdAt
           updatedAt
           userRatingsId
@@ -193,6 +189,7 @@ export const createBike = /* GraphQL */ `
         }
         nextToken
       }
+      id
       createdAt
       updatedAt
       userBikesId
@@ -205,15 +202,14 @@ export const updateBike = /* GraphQL */ `
     $condition: ModelBikeConditionInput
   ) {
     updateBike(input: $input, condition: $condition) {
-      id
       model
       color
       location
       reservations {
         items {
-          id
           startDate
           endDate
+          id
           createdAt
           updatedAt
           userReservationsId
@@ -223,8 +219,8 @@ export const updateBike = /* GraphQL */ `
       }
       ratings {
         items {
-          id
           rating
+          id
           createdAt
           updatedAt
           userRatingsId
@@ -232,6 +228,7 @@ export const updateBike = /* GraphQL */ `
         }
         nextToken
       }
+      id
       createdAt
       updatedAt
       userBikesId
@@ -244,15 +241,14 @@ export const deleteBike = /* GraphQL */ `
     $condition: ModelBikeConditionInput
   ) {
     deleteBike(input: $input, condition: $condition) {
-      id
       model
       color
       location
       reservations {
         items {
-          id
           startDate
           endDate
+          id
           createdAt
           updatedAt
           userReservationsId
@@ -262,8 +258,8 @@ export const deleteBike = /* GraphQL */ `
       }
       ratings {
         items {
-          id
           rating
+          id
           createdAt
           updatedAt
           userRatingsId
@@ -271,6 +267,7 @@ export const deleteBike = /* GraphQL */ `
         }
         nextToken
       }
+      id
       createdAt
       updatedAt
       userBikesId
@@ -283,9 +280,9 @@ export const createReservation = /* GraphQL */ `
     $condition: ModelReservationConditionInput
   ) {
     createReservation(input: $input, condition: $condition) {
-      id
       startDate
       endDate
+      id
       createdAt
       updatedAt
       userReservationsId
@@ -299,9 +296,9 @@ export const updateReservation = /* GraphQL */ `
     $condition: ModelReservationConditionInput
   ) {
     updateReservation(input: $input, condition: $condition) {
-      id
       startDate
       endDate
+      id
       createdAt
       updatedAt
       userReservationsId
@@ -315,9 +312,9 @@ export const deleteReservation = /* GraphQL */ `
     $condition: ModelReservationConditionInput
   ) {
     deleteReservation(input: $input, condition: $condition) {
-      id
       startDate
       endDate
+      id
       createdAt
       updatedAt
       userReservationsId
@@ -331,8 +328,8 @@ export const createRating = /* GraphQL */ `
     $condition: ModelRatingConditionInput
   ) {
     createRating(input: $input, condition: $condition) {
-      id
       rating
+      id
       createdAt
       updatedAt
       userRatingsId
@@ -346,8 +343,8 @@ export const updateRating = /* GraphQL */ `
     $condition: ModelRatingConditionInput
   ) {
     updateRating(input: $input, condition: $condition) {
-      id
       rating
+      id
       createdAt
       updatedAt
       userRatingsId
@@ -361,8 +358,8 @@ export const deleteRating = /* GraphQL */ `
     $condition: ModelRatingConditionInput
   ) {
     deleteRating(input: $input, condition: $condition) {
-      id
       rating
+      id
       createdAt
       updatedAt
       userRatingsId

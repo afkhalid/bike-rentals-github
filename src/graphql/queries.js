@@ -2,9 +2,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const getUser = /* GraphQL */ `
-  query GetUser($id: ID!) {
-    getUser(id: $id) {
-      id
+  query GetUser($uuid: ID!) {
+    getUser(uuid: $uuid) {
       firstName
       lastName
       email
@@ -13,10 +12,10 @@ export const getUser = /* GraphQL */ `
       username
       bikes {
         items {
-          id
           model
           color
           location
+          id
           createdAt
           updatedAt
           userBikesId
@@ -25,9 +24,9 @@ export const getUser = /* GraphQL */ `
       }
       reservations {
         items {
-          id
           startDate
           endDate
+          id
           createdAt
           updatedAt
           userReservationsId
@@ -37,8 +36,8 @@ export const getUser = /* GraphQL */ `
       }
       ratings {
         items {
-          id
           rating
+          id
           createdAt
           updatedAt
           userRatingsId
@@ -53,13 +52,20 @@ export const getUser = /* GraphQL */ `
 `;
 export const listUsers = /* GraphQL */ `
   query ListUsers(
+    $uuid: ID
     $filter: ModelUserFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listUsers(
+      uuid: $uuid
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
-        id
         firstName
         lastName
         email
@@ -85,15 +91,14 @@ export const listUsers = /* GraphQL */ `
 export const getBike = /* GraphQL */ `
   query GetBike($id: ID!) {
     getBike(id: $id) {
-      id
       model
       color
       location
       reservations {
         items {
-          id
           startDate
           endDate
+          id
           createdAt
           updatedAt
           userReservationsId
@@ -103,8 +108,8 @@ export const getBike = /* GraphQL */ `
       }
       ratings {
         items {
-          id
           rating
+          id
           createdAt
           updatedAt
           userRatingsId
@@ -112,6 +117,7 @@ export const getBike = /* GraphQL */ `
         }
         nextToken
       }
+      id
       createdAt
       updatedAt
       userBikesId
@@ -126,7 +132,6 @@ export const listBikes = /* GraphQL */ `
   ) {
     listBikes(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        id
         model
         color
         location
@@ -136,6 +141,7 @@ export const listBikes = /* GraphQL */ `
         ratings {
           nextToken
         }
+        id
         createdAt
         updatedAt
         userBikesId
@@ -147,9 +153,9 @@ export const listBikes = /* GraphQL */ `
 export const getReservation = /* GraphQL */ `
   query GetReservation($id: ID!) {
     getReservation(id: $id) {
-      id
       startDate
       endDate
+      id
       createdAt
       updatedAt
       userReservationsId
@@ -165,9 +171,9 @@ export const listReservations = /* GraphQL */ `
   ) {
     listReservations(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        id
         startDate
         endDate
+        id
         createdAt
         updatedAt
         userReservationsId
@@ -180,8 +186,8 @@ export const listReservations = /* GraphQL */ `
 export const getRating = /* GraphQL */ `
   query GetRating($id: ID!) {
     getRating(id: $id) {
-      id
       rating
+      id
       createdAt
       updatedAt
       userRatingsId
@@ -197,8 +203,8 @@ export const listRatings = /* GraphQL */ `
   ) {
     listRatings(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        id
         rating
+        id
         createdAt
         updatedAt
         userRatingsId

@@ -4,7 +4,6 @@
 export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser {
     onCreateUser {
-      id
       firstName
       lastName
       email
@@ -13,10 +12,10 @@ export const onCreateUser = /* GraphQL */ `
       username
       bikes {
         items {
-          id
           model
           color
           location
+          id
           createdAt
           updatedAt
           userBikesId
@@ -25,9 +24,9 @@ export const onCreateUser = /* GraphQL */ `
       }
       reservations {
         items {
-          id
           startDate
           endDate
+          id
           createdAt
           updatedAt
           userReservationsId
@@ -37,8 +36,8 @@ export const onCreateUser = /* GraphQL */ `
       }
       ratings {
         items {
-          id
           rating
+          id
           createdAt
           updatedAt
           userRatingsId
@@ -54,7 +53,6 @@ export const onCreateUser = /* GraphQL */ `
 export const onUpdateUser = /* GraphQL */ `
   subscription OnUpdateUser {
     onUpdateUser {
-      id
       firstName
       lastName
       email
@@ -63,10 +61,10 @@ export const onUpdateUser = /* GraphQL */ `
       username
       bikes {
         items {
-          id
           model
           color
           location
+          id
           createdAt
           updatedAt
           userBikesId
@@ -75,9 +73,9 @@ export const onUpdateUser = /* GraphQL */ `
       }
       reservations {
         items {
-          id
           startDate
           endDate
+          id
           createdAt
           updatedAt
           userReservationsId
@@ -87,8 +85,8 @@ export const onUpdateUser = /* GraphQL */ `
       }
       ratings {
         items {
-          id
           rating
+          id
           createdAt
           updatedAt
           userRatingsId
@@ -104,7 +102,6 @@ export const onUpdateUser = /* GraphQL */ `
 export const onDeleteUser = /* GraphQL */ `
   subscription OnDeleteUser {
     onDeleteUser {
-      id
       firstName
       lastName
       email
@@ -113,10 +110,10 @@ export const onDeleteUser = /* GraphQL */ `
       username
       bikes {
         items {
-          id
           model
           color
           location
+          id
           createdAt
           updatedAt
           userBikesId
@@ -125,9 +122,9 @@ export const onDeleteUser = /* GraphQL */ `
       }
       reservations {
         items {
-          id
           startDate
           endDate
+          id
           createdAt
           updatedAt
           userReservationsId
@@ -137,8 +134,8 @@ export const onDeleteUser = /* GraphQL */ `
       }
       ratings {
         items {
-          id
           rating
+          id
           createdAt
           updatedAt
           userRatingsId
@@ -154,15 +151,14 @@ export const onDeleteUser = /* GraphQL */ `
 export const onCreateBike = /* GraphQL */ `
   subscription OnCreateBike {
     onCreateBike {
-      id
       model
       color
       location
       reservations {
         items {
-          id
           startDate
           endDate
+          id
           createdAt
           updatedAt
           userReservationsId
@@ -172,8 +168,8 @@ export const onCreateBike = /* GraphQL */ `
       }
       ratings {
         items {
-          id
           rating
+          id
           createdAt
           updatedAt
           userRatingsId
@@ -181,6 +177,7 @@ export const onCreateBike = /* GraphQL */ `
         }
         nextToken
       }
+      id
       createdAt
       updatedAt
       userBikesId
@@ -190,15 +187,14 @@ export const onCreateBike = /* GraphQL */ `
 export const onUpdateBike = /* GraphQL */ `
   subscription OnUpdateBike {
     onUpdateBike {
-      id
       model
       color
       location
       reservations {
         items {
-          id
           startDate
           endDate
+          id
           createdAt
           updatedAt
           userReservationsId
@@ -208,8 +204,8 @@ export const onUpdateBike = /* GraphQL */ `
       }
       ratings {
         items {
-          id
           rating
+          id
           createdAt
           updatedAt
           userRatingsId
@@ -217,6 +213,7 @@ export const onUpdateBike = /* GraphQL */ `
         }
         nextToken
       }
+      id
       createdAt
       updatedAt
       userBikesId
@@ -226,15 +223,14 @@ export const onUpdateBike = /* GraphQL */ `
 export const onDeleteBike = /* GraphQL */ `
   subscription OnDeleteBike {
     onDeleteBike {
-      id
       model
       color
       location
       reservations {
         items {
-          id
           startDate
           endDate
+          id
           createdAt
           updatedAt
           userReservationsId
@@ -244,8 +240,8 @@ export const onDeleteBike = /* GraphQL */ `
       }
       ratings {
         items {
-          id
           rating
+          id
           createdAt
           updatedAt
           userRatingsId
@@ -253,6 +249,7 @@ export const onDeleteBike = /* GraphQL */ `
         }
         nextToken
       }
+      id
       createdAt
       updatedAt
       userBikesId
@@ -262,9 +259,9 @@ export const onDeleteBike = /* GraphQL */ `
 export const onCreateReservation = /* GraphQL */ `
   subscription OnCreateReservation {
     onCreateReservation {
-      id
       startDate
       endDate
+      id
       createdAt
       updatedAt
       userReservationsId
@@ -275,9 +272,9 @@ export const onCreateReservation = /* GraphQL */ `
 export const onUpdateReservation = /* GraphQL */ `
   subscription OnUpdateReservation {
     onUpdateReservation {
-      id
       startDate
       endDate
+      id
       createdAt
       updatedAt
       userReservationsId
@@ -288,9 +285,9 @@ export const onUpdateReservation = /* GraphQL */ `
 export const onDeleteReservation = /* GraphQL */ `
   subscription OnDeleteReservation {
     onDeleteReservation {
-      id
       startDate
       endDate
+      id
       createdAt
       updatedAt
       userReservationsId
@@ -301,8 +298,8 @@ export const onDeleteReservation = /* GraphQL */ `
 export const onCreateRating = /* GraphQL */ `
   subscription OnCreateRating {
     onCreateRating {
-      id
       rating
+      id
       createdAt
       updatedAt
       userRatingsId
@@ -313,8 +310,8 @@ export const onCreateRating = /* GraphQL */ `
 export const onUpdateRating = /* GraphQL */ `
   subscription OnUpdateRating {
     onUpdateRating {
-      id
       rating
+      id
       createdAt
       updatedAt
       userRatingsId
@@ -325,8 +322,8 @@ export const onUpdateRating = /* GraphQL */ `
 export const onDeleteRating = /* GraphQL */ `
   subscription OnDeleteRating {
     onDeleteRating {
-      id
       rating
+      id
       createdAt
       updatedAt
       userRatingsId
