@@ -1,6 +1,6 @@
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { API } from 'aws-amplify';
 import { listUsers } from "./graphql/queries";
 import { createUser } from "./graphql/mutations";
@@ -13,15 +13,20 @@ import BikesListTab from "./lists/bikes_list_tab";
 import ReservationsListTab from "./lists/reservations_list_tab";
 
 class HomePage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {userRole: "User"};
+  }
+
   async componentDidMount() {
     try {
       const {user} = this.props;
       const apiData = await API.graphql({query: listUsers});
       const users = getQueryResult(apiData, "listUsers");
       const isFirstUser = users.length === 0;
-      const userFound = users.find(databaseUser => databaseUser.username === user.username);
-      if (!userFound) {
-        await API.graphql({
+      let databaseUser = users.find(databaseUser => databaseUser.username === user.username);
+      if (!databaseUser) {
+        const result = await API.graphql({
           query: createUser, variables: {
             input: {
               username: user.username,
@@ -31,7 +36,9 @@ class HomePage extends Component {
             }
           }
         });
+        databaseUser = result.data.createUser;
       }
+      this.setState({userRole: databaseUser.role});
     } catch (e) {
       console.error("Home Page::ComponentDidMount failed for the following error:", e.errors[0].message);
     }
@@ -39,6 +46,7 @@ class HomePage extends Component {
 
   render() {
     const {signOut} = this.props;
+    const {userRole} = this.state;
     return (
       <div>
         <Button className="logout-button mb-3"
@@ -50,18 +58,24 @@ class HomePage extends Component {
         <Tabs>
           <TabList>
             <Tab>Bikes</Tab>
-            <Tab>Users</Tab>
-            <Tab>Reservations</Tab>
+            {userRole === "Manager" ?
+              <Fragment>
+                <Tab>Users</Tab>
+                <Tab>Reservations</Tab>
+              </Fragment> : ""}
           </TabList>
           <TabPanel>
-            <BikesListTab />
+            <BikesListTab userRole={userRole} />
           </TabPanel>
-          <TabPanel>
-            <UsersListTab />
-          </TabPanel>
-          <TabPanel>
-            <ReservationsListTab />
-          </TabPanel>
+          {userRole === "Manager" ?
+            <Fragment>
+              <TabPanel>
+                <UsersListTab />
+              </TabPanel>
+              <TabPanel>
+                <ReservationsListTab />
+              </TabPanel>
+            </Fragment> : ""}
         </Tabs>
       </div>
     );

@@ -73,7 +73,10 @@ export default class UsersListTab extends Component {
     return (
       <div className="rental-container">
         <h2 className="bikes-reservations-title">Bikes Reservations</h2>
-        {loading ? <Spinner className="spinner align-top" animation="border"/> : ""}
+        {loading ? <Spinner size="sm"
+                            className="spinner align-baseline"
+                            animation="border"
+        /> : ""}
         <Table className="mt-2" striped bordered hover>
           <thead>
           <tr>

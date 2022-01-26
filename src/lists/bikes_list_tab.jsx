@@ -1,10 +1,11 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Button, Spinner, Table } from "react-bootstrap";
 import { API, Auth } from "aws-amplify";
 import { listBikes, listRatings, listReservations } from "../graphql/queries";
-import { getQueryResult, sortBy } from "../utils";
+import { filterBikes, getQueryResult, sortBy, toLocaleDate } from "../utils";
 import { Link } from "react-router-dom";
 import { deleteBike } from "../graphql/mutations";
+import BikesFilter from "../widgets/bikes_filter";
 
 export default class BikesListTab extends Component {
   constructor(props) {
@@ -43,7 +44,12 @@ export default class BikesListTab extends Component {
         ...bike,
       }
     });
-    this.setState({userId: user.attributes.sub, bikes, ratings, loading: false});
+    this.setState({
+      userId: user.attributes.sub,
+      originalData: bikes,
+      bikes, ratings,
+      loading: false
+    });
   }
 
   async handleDeleteBike(id) {
@@ -69,6 +75,7 @@ export default class BikesListTab extends Component {
   average = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
 
   renderBikeRow(bike, index) {
+    const {userRole} = this.props;
     return (
       <tr key={index}>
         <td>{bike.model}</td>
@@ -77,6 +84,9 @@ export default class BikesListTab extends Component {
         <td>{bike.rating || "N/A"}</td>
         <td className={bike.reservation.length > 0 ? "not-available" : "available"}>
           {bike.reservation.length > 0 ? "No" : "Yes"}
+        </td>
+        <td>
+          {bike.reservation.length > 0 ? toLocaleDate(bike.reservation[0].endDate) : "N/A"}
         </td>
         <td>
           <div className="centered">
@@ -89,33 +99,46 @@ export default class BikesListTab extends Component {
             </Link>
           </div>
         </td>
-        <td>
-          <div className="centered">
-            <Link to={this.to(bike, "edit")}>
-              <Button variant="secondary"
-                      size="sm"
-              >
-                Edit
-              </Button>
-            </Link>
-          </div>
-        </td>
-        <td>
-          <div className="centered">
-            <Button variant="danger"
-                    size="sm"
-                    onClick={this.handleDeleteBike.bind(this, bike.id)}
-            >
-              Delete
-            </Button>
-          </div>
-        </td>
+        {userRole === "Manager" ?
+          <Fragment>
+            <td>
+              <div className="centered">
+                <Link to={this.to(bike, "edit")}>
+                  <Button variant="secondary"
+                          size="sm"
+                  >
+                    Edit
+                  </Button>
+                </Link>
+              </div>
+            </td>
+            <td>
+              <div className="centered">
+                <Button variant="danger"
+                        size="sm"
+                        onClick={this.handleDeleteBike.bind(this, bike.id)}
+                >
+                  Delete
+                </Button>
+              </div>
+            </td>
+          </Fragment> : ""}
       </tr>
     );
   }
 
+  handleFilterChange(filterOptions) {
+    const bikes = filterBikes(filterOptions, this.state.originalData);
+    this.setState({bikes});
+  }
+
+  handleClearFilter() {
+    this.setState({bikes: this.state.originalData});
+  }
+
   render() {
     const {bikes, loading} = this.state;
+    const {userRole} = this.props;
     const tableData = bikes.length === 0 ?
       <tr>
         <td colSpan={6}>
@@ -125,14 +148,21 @@ export default class BikesListTab extends Component {
 
     return (
       <div>
-        <Link to={this.to(null, "add")}>
-          {loading ? <Spinner animation="border" /> : ""}
-          <Button className="add-button"
-                  variant="primary"
-          >
-            Add Bike
-          </Button>
-        </Link>
+        {userRole === "Manager" ?
+          <div className="bike-add-button">
+            <Link to={this.to(null, "add")}>
+              {loading ? <Spinner animation="border" /> : ""}
+              <Button className="add-button"
+                      variant="primary"
+              >
+                Add Bike
+              </Button>
+            </Link>
+          </div> : loading ? <Spinner className="spinner" animation="border" /> : ""}
+        <BikesFilter onFilterChange={this.handleFilterChange.bind(this)}
+                     onClearFilter={this.handleClearFilter.bind(this)}
+                     loading={loading}
+        />
         <Table className="mt-2" striped bordered hover>
           <thead>
           <tr>
@@ -141,6 +171,7 @@ export default class BikesListTab extends Component {
             <th>Location</th>
             <th>Rate</th>
             <th>Available</th>
+            <th>Reservation End Date</th>
             <th className="centered" colSpan={4}>Manage</th>
           </tr>
           </thead>
