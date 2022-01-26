@@ -22,10 +22,15 @@ type Bike @model {
 }
 
 type Reservation @model {
-  startDate: AWSDate!
-  endDate: AWSDate!
+  startDate: String!
+  endDate: String!
+  status: String!
+  userReservationsId: String!
+  bikeReservationsId: String!
 }
 
 type Rating @model {
   rating: Int!
+  userRatingsId: String!
+  bikeRatingsId: String!
 }

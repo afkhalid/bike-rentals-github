@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Button, Table } from "react-bootstrap";
+import { Button, Spinner, Table } from "react-bootstrap";
 import { API } from "aws-amplify";
-import { listUsers } from "../graphql/queries";
+import { listBikes, listReservations, listUsers } from "../graphql/queries";
 import { getQueryResult } from "../utils";
 import { Link } from "react-router-dom";
 import { deleteUser } from "../graphql/mutations";
@@ -11,17 +11,41 @@ export default class UsersListTab extends Component {
     super(props);
     this.state = {
       users: [],
+      loading: true,
     };
   }
 
   async componentDidMount() {
     const apiData = await API.graphql({query: listUsers});
-    const users = getQueryResult(apiData, "listUsers");
-    this.setState({users});
+    let users = getQueryResult(apiData, "listUsers");
+
+    const bikesData = await API.graphql({query: listBikes});
+    const bikes = getQueryResult(bikesData, "listBikes");
+
+    const reservationData = await API.graphql({query: listReservations});
+    const reservations = getQueryResult(reservationData, "listReservations");
+
+    users = users.map(user => {
+      const userReservations = reservations
+        .filter(reservation => reservation.userReservationsId === user.uuid)
+        .map(reservation => {
+          return {
+            bike: bikes.find(bike => bike.id === reservation.bikeReservationsId),
+            ...reservation,
+          };
+        });
+
+      return {
+        ...user,
+        reservations: userReservations,
+      }
+    });
+
+    this.setState({users, loading: false});
   }
 
   async handleDeleteUser(uuid) {
-    this.setState({users: this.users.filter(user => user.uuid !== uuid)});
+    this.setState({users: this.state.users.filter(user => user.uuid !== uuid)});
     await API.graphql({query: deleteUser, variables: {input: {uuid}}});
   }
 
@@ -46,7 +70,7 @@ export default class UsersListTab extends Component {
         <td>
           <div className="centered">
             <Link to={this.to(user, "view")}>
-              <Button variant="secondary"
+              <Button variant="primary"
                       size="sm"
               >
                 View
@@ -69,7 +93,7 @@ export default class UsersListTab extends Component {
           <div className="centered">
             <Button variant="danger"
                     size="sm"
-                    onClick={this.handleDeleteUser.bind(this, user.id)}
+                    onClick={this.handleDeleteUser.bind(this, user.uuid)}
             >
               Delete
             </Button>
@@ -80,7 +104,7 @@ export default class UsersListTab extends Component {
   }
 
   render() {
-    const {users} = this.state;
+    const {users, loading} = this.state;
     const tableData = users.length === 0 ?
       <tr>
         <td colSpan={6}>
@@ -91,6 +115,7 @@ export default class UsersListTab extends Component {
     return (
       <div>
         <Link to={this.to(null, "add")}>
+          {loading ? <Spinner animation="border" /> : ""}
           <Button className="add-button"
                   variant="primary"
           >

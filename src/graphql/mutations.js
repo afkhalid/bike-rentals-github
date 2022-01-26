@@ -13,38 +13,27 @@ export const createUser = /* GraphQL */ `
       uuid
       role
       username
-      bikes {
-        items {
-          model
-          color
-          location
-          id
-          createdAt
-          updatedAt
-          userBikesId
-        }
-        nextToken
-      }
       reservations {
         items {
           startDate
           endDate
+          status
+          userReservationsId
+          bikeReservationsId
           id
           createdAt
           updatedAt
-          userReservationsId
-          bikeReservationsId
         }
         nextToken
       }
       ratings {
         items {
           rating
+          userRatingsId
+          bikeRatingsId
           id
           createdAt
           updatedAt
-          userRatingsId
-          bikeRatingsId
         }
         nextToken
       }
@@ -65,38 +54,27 @@ export const updateUser = /* GraphQL */ `
       uuid
       role
       username
-      bikes {
-        items {
-          model
-          color
-          location
-          id
-          createdAt
-          updatedAt
-          userBikesId
-        }
-        nextToken
-      }
       reservations {
         items {
           startDate
           endDate
+          status
+          userReservationsId
+          bikeReservationsId
           id
           createdAt
           updatedAt
-          userReservationsId
-          bikeReservationsId
         }
         nextToken
       }
       ratings {
         items {
           rating
+          userRatingsId
+          bikeRatingsId
           id
           createdAt
           updatedAt
-          userRatingsId
-          bikeRatingsId
         }
         nextToken
       }
@@ -117,38 +95,27 @@ export const deleteUser = /* GraphQL */ `
       uuid
       role
       username
-      bikes {
-        items {
-          model
-          color
-          location
-          id
-          createdAt
-          updatedAt
-          userBikesId
-        }
-        nextToken
-      }
       reservations {
         items {
           startDate
           endDate
+          status
+          userReservationsId
+          bikeReservationsId
           id
           createdAt
           updatedAt
-          userReservationsId
-          bikeReservationsId
         }
         nextToken
       }
       ratings {
         items {
           rating
+          userRatingsId
+          bikeRatingsId
           id
           createdAt
           updatedAt
-          userRatingsId
-          bikeRatingsId
         }
         nextToken
       }
@@ -170,29 +137,29 @@ export const createBike = /* GraphQL */ `
         items {
           startDate
           endDate
+          status
+          userReservationsId
+          bikeReservationsId
           id
           createdAt
           updatedAt
-          userReservationsId
-          bikeReservationsId
         }
         nextToken
       }
       ratings {
         items {
           rating
+          userRatingsId
+          bikeRatingsId
           id
           createdAt
           updatedAt
-          userRatingsId
-          bikeRatingsId
         }
         nextToken
       }
       id
       createdAt
       updatedAt
-      userBikesId
     }
   }
 `;
@@ -209,29 +176,29 @@ export const updateBike = /* GraphQL */ `
         items {
           startDate
           endDate
+          status
+          userReservationsId
+          bikeReservationsId
           id
           createdAt
           updatedAt
-          userReservationsId
-          bikeReservationsId
         }
         nextToken
       }
       ratings {
         items {
           rating
+          userRatingsId
+          bikeRatingsId
           id
           createdAt
           updatedAt
-          userRatingsId
-          bikeRatingsId
         }
         nextToken
       }
       id
       createdAt
       updatedAt
-      userBikesId
     }
   }
 `;
@@ -248,29 +215,29 @@ export const deleteBike = /* GraphQL */ `
         items {
           startDate
           endDate
+          status
+          userReservationsId
+          bikeReservationsId
           id
           createdAt
           updatedAt
-          userReservationsId
-          bikeReservationsId
         }
         nextToken
       }
       ratings {
         items {
           rating
+          userRatingsId
+          bikeRatingsId
           id
           createdAt
           updatedAt
-          userRatingsId
-          bikeRatingsId
         }
         nextToken
       }
       id
       createdAt
       updatedAt
-      userBikesId
     }
   }
 `;
@@ -282,11 +249,12 @@ export const createReservation = /* GraphQL */ `
     createReservation(input: $input, condition: $condition) {
       startDate
       endDate
+      status
+      userReservationsId
+      bikeReservationsId
       id
       createdAt
       updatedAt
-      userReservationsId
-      bikeReservationsId
     }
   }
 `;
@@ -298,11 +266,12 @@ export const updateReservation = /* GraphQL */ `
     updateReservation(input: $input, condition: $condition) {
       startDate
       endDate
+      status
+      userReservationsId
+      bikeReservationsId
       id
       createdAt
       updatedAt
-      userReservationsId
-      bikeReservationsId
     }
   }
 `;
@@ -314,11 +283,12 @@ export const deleteReservation = /* GraphQL */ `
     deleteReservation(input: $input, condition: $condition) {
       startDate
       endDate
+      status
+      userReservationsId
+      bikeReservationsId
       id
       createdAt
       updatedAt
-      userReservationsId
-      bikeReservationsId
     }
   }
 `;
@@ -329,11 +299,11 @@ export const createRating = /* GraphQL */ `
   ) {
     createRating(input: $input, condition: $condition) {
       rating
+      userRatingsId
+      bikeRatingsId
       id
       createdAt
       updatedAt
-      userRatingsId
-      bikeRatingsId
     }
   }
 `;
@@ -344,11 +314,11 @@ export const updateRating = /* GraphQL */ `
   ) {
     updateRating(input: $input, condition: $condition) {
       rating
+      userRatingsId
+      bikeRatingsId
       id
       createdAt
       updatedAt
-      userRatingsId
-      bikeRatingsId
     }
   }
 `;
@@ -359,11 +329,11 @@ export const deleteRating = /* GraphQL */ `
   ) {
     deleteRating(input: $input, condition: $condition) {
       rating
+      userRatingsId
+      bikeRatingsId
       id
       createdAt
       updatedAt
-      userRatingsId
-      bikeRatingsId
     }
   }
 `;

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Button, Table } from "react-bootstrap";
-import { API } from "aws-amplify";
-import { listBikes } from "../graphql/queries";
-import { getQueryResult } from "../utils";
+import { Button, Spinner, Table } from "react-bootstrap";
+import { API, Auth } from "aws-amplify";
+import { listBikes, listRatings, listReservations } from "../graphql/queries";
+import { getQueryResult, sortBy } from "../utils";
 import { Link } from "react-router-dom";
 import { deleteBike } from "../graphql/mutations";
 
@@ -11,13 +11,39 @@ export default class BikesListTab extends Component {
     super(props);
     this.state = {
       bikes: [],
+      ratings: [],
+      loading: true,
     };
   }
 
   async componentDidMount() {
-    const apiData = await API.graphql({query: listBikes});
-    const bikes = getQueryResult(apiData, "listBikes");
-    this.setState({bikes});
+    const bikesData = await API.graphql({query: listBikes});
+    let bikes = getQueryResult(bikesData, "listBikes");
+
+    const ratingsData = await API.graphql({query: listRatings});
+    const ratings = getQueryResult(ratingsData, "listRatings");
+
+    const reservationData = await API.graphql({query: listReservations});
+    const reservations = getQueryResult(reservationData, "listReservations");
+
+    const user = await Auth.currentUserInfo();
+
+    bikes = bikes.map(bike => {
+      const reservation = reservations.filter(reservation => {
+        return reservation.bikeReservationsId === bike.id &&
+          reservation.status === "active" &&
+          new Date(reservation.endDate) > new Date();
+      });
+      const rating = this.average(ratings.filter(rating =>
+        rating.bikeRatingsId === bike.id)
+        .map(rating => rating.rating));
+      return {
+        rating,
+        reservation,
+        ...bike,
+      }
+    });
+    this.setState({userId: user.attributes.sub, bikes, ratings, loading: false});
   }
 
   async handleDeleteBike(id) {
@@ -26,14 +52,21 @@ export default class BikesListTab extends Component {
   }
 
   to = (bike, operation) => {
+    const {ratings, userId} = this.state;
     return {
       pathname: "bike",
       state: {
         operation,
         bike,
+        userId,
+        rating: ratings.find(rating =>
+          rating.bikeRatingsId === bike?.id &&
+          rating.userRatingsId === userId)
       },
     };
   };
+
+  average = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
 
   renderBikeRow(bike, index) {
     return (
@@ -41,12 +74,14 @@ export default class BikesListTab extends Component {
         <td>{bike.model}</td>
         <td>{bike.color}</td>
         <td>{bike.location}</td>
-        <td>4</td>
-        <td>No</td>
+        <td>{bike.rating || "N/A"}</td>
+        <td className={bike.reservation.length > 0 ? "not-available" : "available"}>
+          {bike.reservation.length > 0 ? "No" : "Yes"}
+        </td>
         <td>
           <div className="centered">
             <Link to={this.to(bike, "view")}>
-              <Button variant="secondary"
+              <Button variant="primary"
                       size="sm"
               >
                 View
@@ -80,7 +115,7 @@ export default class BikesListTab extends Component {
   }
 
   render() {
-    const {bikes} = this.state;
+    const {bikes, loading} = this.state;
     const tableData = bikes.length === 0 ?
       <tr>
         <td colSpan={6}>
@@ -91,6 +126,7 @@ export default class BikesListTab extends Component {
     return (
       <div>
         <Link to={this.to(null, "add")}>
+          {loading ? <Spinner animation="border" /> : ""}
           <Button className="add-button"
                   variant="primary"
           >

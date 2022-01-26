@@ -10,38 +10,27 @@ export const getUser = /* GraphQL */ `
       uuid
       role
       username
-      bikes {
-        items {
-          model
-          color
-          location
-          id
-          createdAt
-          updatedAt
-          userBikesId
-        }
-        nextToken
-      }
       reservations {
         items {
           startDate
           endDate
+          status
+          userReservationsId
+          bikeReservationsId
           id
           createdAt
           updatedAt
-          userReservationsId
-          bikeReservationsId
         }
         nextToken
       }
       ratings {
         items {
           rating
+          userRatingsId
+          bikeRatingsId
           id
           createdAt
           updatedAt
-          userRatingsId
-          bikeRatingsId
         }
         nextToken
       }
@@ -72,9 +61,6 @@ export const listUsers = /* GraphQL */ `
         uuid
         role
         username
-        bikes {
-          nextToken
-        }
         reservations {
           nextToken
         }
@@ -98,29 +84,29 @@ export const getBike = /* GraphQL */ `
         items {
           startDate
           endDate
+          status
+          userReservationsId
+          bikeReservationsId
           id
           createdAt
           updatedAt
-          userReservationsId
-          bikeReservationsId
         }
         nextToken
       }
       ratings {
         items {
           rating
+          userRatingsId
+          bikeRatingsId
           id
           createdAt
           updatedAt
-          userRatingsId
-          bikeRatingsId
         }
         nextToken
       }
       id
       createdAt
       updatedAt
-      userBikesId
     }
   }
 `;
@@ -144,7 +130,6 @@ export const listBikes = /* GraphQL */ `
         id
         createdAt
         updatedAt
-        userBikesId
       }
       nextToken
     }
@@ -155,11 +140,12 @@ export const getReservation = /* GraphQL */ `
     getReservation(id: $id) {
       startDate
       endDate
+      status
+      userReservationsId
+      bikeReservationsId
       id
       createdAt
       updatedAt
-      userReservationsId
-      bikeReservationsId
     }
   }
 `;
@@ -173,11 +159,12 @@ export const listReservations = /* GraphQL */ `
       items {
         startDate
         endDate
+        status
+        userReservationsId
+        bikeReservationsId
         id
         createdAt
         updatedAt
-        userReservationsId
-        bikeReservationsId
       }
       nextToken
     }
@@ -187,11 +174,11 @@ export const getRating = /* GraphQL */ `
   query GetRating($id: ID!) {
     getRating(id: $id) {
       rating
+      userRatingsId
+      bikeRatingsId
       id
       createdAt
       updatedAt
-      userRatingsId
-      bikeRatingsId
     }
   }
 `;
@@ -204,11 +191,11 @@ export const listRatings = /* GraphQL */ `
     listRatings(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         rating
+        userRatingsId
+        bikeRatingsId
         id
         createdAt
         updatedAt
-        userRatingsId
-        bikeRatingsId
       }
       nextToken
     }

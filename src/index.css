@@ -25,6 +25,12 @@ Button {
   text-align: center;
 }
 
+.spinner {
+  margin-left: 5px;
+  vertical-align: middle !important;
+  color: #0d6efd;
+}
+
 .logout-button,
 .add-button {
   float: right;
@@ -39,4 +45,33 @@ Button {
 
 .link-button {
   margin-left: 10px;
+}
+
+.rental-container {
+  padding: 20px;
+  margin-top: 20px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
+
+.date-picker-div {
+  max-width: 200px;
+  display: inline-block;
+}
+
+.rental-confirm-button {
+  margin-top: -5px;
+}
+
+.not-available {
+  background-color: #d59191 !important;
+}
+
+.available {
+  background-color: #83b541 !important;
+}
+
+.bikes-reservations-title {
+  display: inline-block;
+  margin-right: 5px;
 }
