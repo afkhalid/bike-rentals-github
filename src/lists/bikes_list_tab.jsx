@@ -44,6 +44,7 @@ export default class BikesListTab extends Component {
         ...bike,
       }
     });
+
     this.setState({
       userId: user.attributes.sub,
       originalData: bikes,

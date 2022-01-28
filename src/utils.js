@@ -8,6 +8,12 @@ export function toLocaleDate(date) {
   return new Date(date).toLocaleDateString("en-US", DATE_OPTIONS);
 }
 
+export function addDays(date, days) {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
+
 export function filterBikes(filterOptions, bikes) {
 
   bikes = filterBy(bikes, filterOptions, "model");

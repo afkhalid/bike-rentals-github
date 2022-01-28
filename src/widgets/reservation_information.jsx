@@ -4,6 +4,7 @@ import { Button, Form, Spinner } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css";
 import { API } from "aws-amplify";
 import { createReservation, updateReservation } from "../graphql/mutations";
+import { addDays } from "../utils";
 
 export default class ReservationInformation extends Component {
   constructor(props) {
@@ -22,6 +23,8 @@ export default class ReservationInformation extends Component {
   async handleConfirmReservation() {
     const {bikeId, userId} = this.props;
     const {startDate, endDate} = this.state;
+    const fixedEndDate = endDate < startDate ?
+      addDays(startDate, 1) : endDate;
 
     this.setState({loading: true}, async() => {
       const result = await API.graphql({
@@ -29,7 +32,7 @@ export default class ReservationInformation extends Component {
         variables: {
           input: {
             startDate: new Date(startDate).toISOString(),
-            endDate: new Date(endDate).toISOString(),
+            endDate: new Date(fixedEndDate).toISOString(),
             status: "active",
             bikeReservationsId: bikeId,
             userReservationsId: userId,
@@ -65,6 +68,9 @@ export default class ReservationInformation extends Component {
     const {startDate, endDate, loading, reservation} = this.state;
     const currentUserReservation = this.props.reservation;
 
+    const selectedEndDate = currentUserReservation ? new Date(currentUserReservation.endDate) :
+      endDate < startDate ? addDays(startDate, 1) : endDate;
+
     return (
       <div className="rental-container">
         <h4>Reservation Information</h4>
@@ -80,9 +86,8 @@ export default class ReservationInformation extends Component {
         <div className="date-picker-div">
           <Form.Label>End Date</Form.Label>
           <DatePicker onChange={this.handleDateChange.bind(this, "endDate")}
-                      minDate={endDate.setDate(startDate.getDate() + 1)}
-                      selected={currentUserReservation ? new Date(currentUserReservation.endDate) :
-                        endDate < startDate ? endDate.setDate(startDate.getDate() + 1) : endDate}
+                      minDate={addDays(startDate, 1)}
+                      selected={selectedEndDate}
                       disabled={!!reservation || !!currentUserReservation}
                       dateFormat="yyyy-MM-dd"
           />

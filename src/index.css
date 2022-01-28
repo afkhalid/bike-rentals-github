@@ -91,3 +91,9 @@ Button {
   justify-content: space-between;
   align-items: flex-end;
 }
+
+.btn-close {
+  margin-right: -45px;
+  margin-top: 2px;
+  font-size: 10px;
+}

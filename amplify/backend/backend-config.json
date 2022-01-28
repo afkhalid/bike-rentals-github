@@ -41,5 +41,12 @@
         }
       }
     }
+  },
+  "function": {
+    "manageUsers": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
   }
 }

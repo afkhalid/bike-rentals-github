@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Button, Spinner, Table } from "react-bootstrap";
-import { API } from "aws-amplify";
+import { Alert, Button, Spinner, Table } from "react-bootstrap";
+import { API, Auth } from "aws-amplify";
 import { listBikes, listReservations, listUsers } from "../graphql/queries";
 import { getQueryResult } from "../utils";
 import { Link } from "react-router-dom";
@@ -12,6 +12,7 @@ export default class UsersListTab extends Component {
     this.state = {
       users: [],
       loading: true,
+      showAlert: false,
     };
   }
 
@@ -45,8 +46,36 @@ export default class UsersListTab extends Component {
   }
 
   async handleDeleteUser(uuid) {
-    this.setState({users: this.state.users.filter(user => user.uuid !== uuid)});
-    await API.graphql({query: deleteUser, variables: {input: {uuid}}});
+    this.setState({loading: true}, async () => {
+      const userToDelete = this.state.users.find(user => user.uuid === uuid);
+      // const currentUser = await Auth.currentUserInfo();
+      //
+      // if(userToDelete.username === currentUser.username) {
+      //   this.setState({
+      //     loading: false,
+      //     showAlert: true,
+      //     alertMessage: "You cannot delete your own account."
+      //   });
+      //   return;
+      // }
+      //
+      // const activeUserReservations = userToDelete.reservations.find(reservation => {
+      //   return reservation.status === "active" &&
+      //     new Date(reservation.endDate) > new Date();
+      // });
+      //
+      // if(activeUserReservations) {
+      //   this.setState({
+      //     loading: false,
+      //     showAlert: true,
+      //     alertMessage: "You cannot delete a user with active reservations."
+      //   });
+      //   return;
+      // }
+      //
+      // this.setState({loading: true, users: this.state.users.filter(user => user.uuid !== uuid)});
+      // await API.graphql({query: deleteUser, variables: {input: {uuid}}});
+    });
   }
 
   to = (user, operation) => {
@@ -104,7 +133,7 @@ export default class UsersListTab extends Component {
   }
 
   render() {
-    const {users, loading} = this.state;
+    const {users, loading, alertMessage, showAlert} = this.state;
     const tableData = users.length === 0 ?
       <tr>
         <td colSpan={6}>
@@ -114,6 +143,10 @@ export default class UsersListTab extends Component {
 
     return (
       <div>
+        {showAlert ?
+          <Alert variant="danger" onClose={() => this.setState({showAlert: false})} dismissible>
+          {alertMessage}
+        </Alert> : ""}
         <Link to={this.to(null, "add")}>
           {loading ? <Spinner animation="border" /> : ""}
           <Button className="add-button"
