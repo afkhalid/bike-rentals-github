@@ -39,7 +39,7 @@ export default class BikesListTab extends Component {
         rating.bikeRatingsId === bike.id)
         .map(rating => rating.rating));
       return {
-        rating,
+        rating: rating ? rating.toFixed(2) : "N/A",
         reservation,
         ...bike,
       }
@@ -82,7 +82,7 @@ export default class BikesListTab extends Component {
         <td>{bike.model}</td>
         <td>{bike.color}</td>
         <td>{bike.location}</td>
-        <td>{bike.rating ? bike.rating.toFixed(2) : "N/A"}</td>
+        <td>{bike.rating}</td>
         <td className={bike.reservation.length > 0 ? "not-available" : "available"}>
           {bike.reservation.length > 0 ? "No" : "Yes"}
         </td>
@@ -142,7 +142,7 @@ export default class BikesListTab extends Component {
     const {userRole} = this.props;
     const tableData = bikes.length === 0 ?
       <tr>
-        <td colSpan={6}>
+        <td colSpan={7}>
           No bikes for rental
         </td>
       </tr> : bikes.map((bike, idx) => this.renderBikeRow(bike, idx));

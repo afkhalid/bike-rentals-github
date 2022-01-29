@@ -5,6 +5,7 @@ import { API } from "aws-amplify";
 import { createBike, createRating, updateBike, updateRating } from "../graphql/mutations";
 import ReactStars from "react-rating-stars-component";
 import ReservationInformation from "../widgets/reservation_information";
+import { COLORS, LOCATIONS, MODELS } from "../constants";
 
 export default class Bike extends Component {
   constructor(props) {
@@ -20,6 +21,9 @@ export default class Bike extends Component {
       loading: false,
       shouldShowRentalInfo: false,
     } : {
+      model: "",
+      color: "",
+      location: "",
       rating: state.rating,
       loading: false,
       shouldShowRentalInfo: false,
@@ -93,8 +97,17 @@ export default class Bike extends Component {
     });
   }
 
+  handleFillWithRandomData() {
+    const index = Math.floor(Math.random() * 61);
+    const model = MODELS[index];
+    const color = COLORS[index];
+    const location = LOCATIONS[index].name;
+    this.setState({model, color, location});
+  }
+
   render() {
     const {rating, loading, shouldShowRentalInfo} = this.state;
+    const {model, color, location} = this.state;
     const isAvailable = this.bike?.reservation?.length === 0;
     const isCurrentUserReservation = !isAvailable &&
       this.bike?.reservation[0]?.userReservationsId === this.userId;
@@ -108,7 +121,7 @@ export default class Bike extends Component {
             <Form.Control required
                           type="text"
                           disabled={this.operation === "view"}
-                          defaultValue={this.operation === "add" ? "" : this.bike.model}
+                          defaultValue={this.operation === "add" ? model : this.bike.model}
                           onChange={this.onTextChange.bind(this, "model")}
             />
           </Form.Group>
@@ -117,7 +130,7 @@ export default class Bike extends Component {
             <Form.Control required
                           type="text"
                           disabled={this.operation === "view"}
-                          defaultValue={this.operation === "add" ? "" : this.bike.color}
+                          defaultValue={this.operation === "add" ? color : this.bike.color}
                           onChange={this.onTextChange.bind(this, "color")}
             />
           </Form.Group>
@@ -126,7 +139,7 @@ export default class Bike extends Component {
             <Form.Control required
                           type="text"
                           disabled={this.operation === "view"}
-                          defaultValue={this.operation === "add" ? "" : this.bike.location}
+                          defaultValue={this.operation === "add" ? location : this.bike.location}
                           onChange={this.onTextChange.bind(this, "location")}
             />
           </Form.Group>
@@ -153,6 +166,13 @@ export default class Bike extends Component {
             >
               {isAvailable ? "Rent" : isCurrentUserReservation ?
                 "CURRENTLY RESERVED BY YOU" : "NOT AVAILABLE"}
+            </Button> : ""}
+          {this.operation === "add" ?
+            <Button onClick={this.handleFillWithRandomData.bind(this)}
+                    className="link-button"
+                    variant="secondary"
+            >
+              Random Data
             </Button> : ""}
           <Link className="link-button"
                 to="/"
