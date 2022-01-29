@@ -73,7 +73,7 @@ export default class BikesListTab extends Component {
     };
   };
 
-  average = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
+  average = arr => (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(2);
 
   renderBikeRow(bike, index) {
     const {userRole} = this.props;
