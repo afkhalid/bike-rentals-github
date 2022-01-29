@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Button, Form, Spinner } from "react-bootstrap";
+import { Alert, Button, Form, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { API, Auth } from "aws-amplify";
 import { createUser, updateUser } from "../graphql/mutations";
@@ -17,7 +17,7 @@ export default class User extends Component {
       email: this.user.email,
       role: this.user.role,
       loading: false,
-    } : {loading: false};
+    } : {loading: false, role: "User"};
   }
 
   onTextChange(fieldName, e) {
@@ -32,25 +32,23 @@ export default class User extends Component {
       this.setState({loading: true}, async() => {
         const {firstName, lastName, username, email, role} = this.state;
         if (this.operation === "add") {
-          const cognitoUser = await Auth.signUp({username, password: "PassW0rd!@#$", attributes: {email}});
-          await API.post("AdminQueries", "/confirmUserSignUp", {
-            body: {username},
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
-            }
-          });
-          await API.graphql({
-            query: createUser,
-            variables: {input: {uuid: cognitoUser.userSub, firstName, lastName, username, email, role}}
-          });
+          const result = await API.get("bikerentalsapi", `/users/add/${username}?email=${email}`, "bikerentalsapi");
+          if (result.status === "success") {
+            await API.graphql({
+              query: createUser,
+              variables: {input: {uuid: result.data, firstName, lastName, username, email, role}}
+            });
+            window.location.href = "/";
+          } else {
+            this.setState({showAlert: true, alertMessage: result.data});
+          }
         } else if (this.operation === "edit") {
           await API.graphql({
             query: updateUser,
             variables: {input: {uuid: this.user.uuid, firstName, lastName, username, email, role}}
           });
+          window.location.href = "/";
         }
-        window.location.href = "/";
         this.setState({loading: false});
       });
     } catch (e) {
@@ -68,9 +66,13 @@ export default class User extends Component {
   }
 
   render() {
-    const {loading} = this.state;
+    const {loading, showAlert, alertMessage} = this.state;
     return (
       <Fragment>
+        {showAlert ?
+          <Alert variant="danger" onClose={() => this.setState({showAlert: false})} dismissible>
+            {alertMessage}
+          </Alert> : ""}
         <div className="rental-container ">
           <h2>User Information</h2>
           <Form onSubmit={this.addOrEditUser.bind(this)}>

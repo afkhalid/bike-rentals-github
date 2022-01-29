@@ -40,6 +40,20 @@
           "additionalAuthenticationProviders": []
         }
       }
+    },
+    "bikerentalsapi": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "manageUsers",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
     }
   },
   "function": {
