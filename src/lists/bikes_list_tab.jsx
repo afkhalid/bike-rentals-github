@@ -73,7 +73,7 @@ export default class BikesListTab extends Component {
     };
   };
 
-  average = arr => (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(2);
+  average = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
 
   renderBikeRow(bike, index) {
     const {userRole} = this.props;
@@ -82,7 +82,7 @@ export default class BikesListTab extends Component {
         <td>{bike.model}</td>
         <td>{bike.color}</td>
         <td>{bike.location}</td>
-        <td>{bike.rating || "N/A"}</td>
+        <td>{bike.rating ? bike.rating.toFixed(2) : "N/A"}</td>
         <td className={bike.reservation.length > 0 ? "not-available" : "available"}>
           {bike.reservation.length > 0 ? "No" : "Yes"}
         </td>
