@@ -23,7 +23,7 @@ export default class ReservationInformation extends Component {
   async handleConfirmReservation() {
     const {bikeId, userId} = this.props;
     const {startDate, endDate} = this.state;
-    const fixedEndDate = endDate < startDate ?
+    const fixedEndDate = endDate <= startDate ?
       addDays(startDate, 1) : endDate;
 
     this.setState({loading: true}, async() => {
@@ -69,7 +69,7 @@ export default class ReservationInformation extends Component {
     const currentUserReservation = this.props.reservation;
 
     const selectedEndDate = currentUserReservation ? new Date(currentUserReservation.endDate) :
-      endDate < startDate ? addDays(startDate, 1) : endDate;
+      endDate <= startDate ? addDays(startDate, 1) : endDate;
 
     return (
       <div className="rental-container">

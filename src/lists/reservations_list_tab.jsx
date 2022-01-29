@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button, Spinner, Table } from "react-bootstrap";
 import { API } from "aws-amplify";
 import { listBikes, listReservations, listUsers } from "../graphql/queries";
-import { getQueryResult, toLocaleDate } from "../utils";
+import { getQueryResult, sortBy, toLocaleDate } from "../utils";
 import { Link } from "react-router-dom";
 import { deleteUser } from "../graphql/mutations";
 
@@ -37,7 +37,8 @@ export default class UsersListTab extends Component {
 
       return {
         ...user,
-        reservations: userReservations,
+        reservations: userReservations
+          .sort((a, b) => new Date(a.startDate) - new Date(b.startDate)),
       }
     });
 
@@ -65,7 +66,7 @@ export default class UsersListTab extends Component {
     const {users, loading} = this.state;
     const tableData = users.length === 0 ?
       <tr>
-        <td colSpan={6}>
+        <td colSpan={7}>
           No reservations
         </td>
       </tr> : users.map((user, idx) => this.renderUserReservations(user, idx));
@@ -80,6 +81,7 @@ export default class UsersListTab extends Component {
         <Table className="mt-2" striped bordered hover>
           <thead>
           <tr>
+            <th>Username</th>
             <th>Model</th>
             <th>Color</th>
             <th>Location</th>
